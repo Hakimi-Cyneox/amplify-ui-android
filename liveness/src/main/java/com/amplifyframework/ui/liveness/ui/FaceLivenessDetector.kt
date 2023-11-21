@@ -70,6 +70,7 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun FaceLivenessDetector(
+    customString: String,
     sessionId: String,
     region: String,
     credentialsProvider: AWSCredentialsProvider<AWSCredentials>? = null,
@@ -78,6 +79,7 @@ fun FaceLivenessDetector(
     onError: Consumer<FaceLivenessDetectionException>
 ) {
     val scope = rememberCoroutineScope()
+    val customString = customString
     val key = Triple(sessionId, region, credentialsProvider)
     var showReadyView by remember(key) { mutableStateOf(!disableStartView) }
     var isFinished by remember(key) { mutableStateOf(false) }
@@ -118,6 +120,7 @@ fun FaceLivenessDetector(
             } else {
                 AlwaysOnMaxBrightnessScreen()
                 ChallengeView(
+                    customString = customString,
                     key = key,
                     sessionId = sessionId,
                     region,
@@ -144,6 +147,7 @@ fun FaceLivenessDetector(
 
 @Composable
 internal fun ChallengeView(
+    customString: String,
     key: Any,
     sessionId: String,
     region: String,
@@ -274,7 +278,7 @@ internal fun ChallengeView(
                             verticalArrangement = Arrangement.spacedBy(5.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            InstructionMessage(livenessState.livenessCheckState.value, true)
+                            InstructionMessage(customString, livenessState.livenessCheckState.value, true)
                             if (livenessState.livenessCheckState.value.instructionId ==
                                 FaceDetector.FaceOvalPosition.TOO_FAR.instructionStringRes
                             ) {
@@ -308,7 +312,7 @@ internal fun ChallengeView(
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            InstructionMessage(livenessState.livenessCheckState.value)
+                            InstructionMessage(customString, livenessState.livenessCheckState.value)
                         }
                     }
                 }

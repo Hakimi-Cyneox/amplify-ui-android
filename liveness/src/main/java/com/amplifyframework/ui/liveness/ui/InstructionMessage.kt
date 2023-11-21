@@ -43,15 +43,17 @@ import com.amplifyframework.ui.liveness.ml.FaceDetector
 import com.amplifyframework.ui.liveness.model.LivenessCheckState
 
 @Composable internal fun InstructionMessage(
+    customString: String,
     livenessCheckState: LivenessCheckState,
     isFaceOvalInstruction: Boolean = false
 ) {
+    val newString = customString
     val instructionText = livenessCheckState.instructionId?.let { stringResource(it) } ?: return
     val showProgress = livenessCheckState is LivenessCheckState.Success
     if (isFaceOvalInstruction) {
-        FaceOvalInstructionMessage(message = instructionText)
+        FaceOvalInstructionMessage(message = newString)
     } else {
-        InstructionMessage(message = instructionText, showProgress = showProgress)
+        InstructionMessage(message = newString, showProgress = showProgress)
     }
 }
 @Composable
