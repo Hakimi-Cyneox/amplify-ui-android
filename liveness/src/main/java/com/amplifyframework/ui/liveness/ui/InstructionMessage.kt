@@ -15,6 +15,8 @@
 
 package com.amplifyframework.ui.liveness.ui
 
+import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,19 +43,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amplifyframework.ui.liveness.ml.FaceDetector
 import com.amplifyframework.ui.liveness.model.LivenessCheckState
+import java.util.Locale
 
 @Composable internal fun InstructionMessage(
+    context: Context,
     customString: String,
     livenessCheckState: LivenessCheckState,
     isFaceOvalInstruction: Boolean = false
 ) {
+
+    fun stringResource2(context: Context, resId: Int, languageCode: String? = null): String {
+        val locale = languageCode?.let { Locale(it) } ?: context.resources.configuration.locale
+        val configuration = Configuration(context.resources.configuration)
+        configuration.setLocale(locale)
+        return context.createConfigurationContext(configuration).getString(resId)
+    }
+
     val newString = customString
-    val instructionText = livenessCheckState.instructionId?.let { stringResource(it) } ?: return
+    val instructionText = livenessCheckState.instructionId?.let {
+        stringResource2(context, it, newString)
+    } ?: return
     val showProgress = livenessCheckState is LivenessCheckState.Success
     if (isFaceOvalInstruction) {
-        FaceOvalInstructionMessage(message = newString)
+        FaceOvalInstructionMessage(message = instructionText)
     } else {
-        InstructionMessage(message = newString, showProgress = showProgress)
+        InstructionMessage(message = instructionText, showProgress = showProgress)
     }
 }
 @Composable

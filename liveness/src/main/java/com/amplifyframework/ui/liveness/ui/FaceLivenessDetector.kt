@@ -278,7 +278,7 @@ internal fun ChallengeView(
                             verticalArrangement = Arrangement.spacedBy(5.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            InstructionMessage(customString, livenessState.livenessCheckState.value, true)
+                            InstructionMessage(context, customString, livenessState.livenessCheckState.value, true)
                             if (livenessState.livenessCheckState.value.instructionId ==
                                 FaceDetector.FaceOvalPosition.TOO_FAR.instructionStringRes
                             ) {
@@ -312,7 +312,7 @@ internal fun ChallengeView(
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            InstructionMessage(customString, livenessState.livenessCheckState.value)
+                            InstructionMessage(context, customString, livenessState.livenessCheckState.value)
                         }
                     }
                 }
